@@ -1,12 +1,17 @@
 # IQ-Learn
-NeurIPS '21 Spotlight Work
+*NeurIPS '21 Spotlight Work* 
 
 (Code coming soon)
 
 
-Reaching human-level performance on Atari with pure imitation:
+**Reaching human-level performance on Atari with pure imitation:**
 
-![Breakout](videos/breakout.gif)
-![Pong](videos/pong.gif)
-![SpaceInvaders](videos/space.gif) 
-![Qbert](videos/qbert.gif)
+<p float="left">
+<img src="videos/pong.gif" width="300">
+<img src="videos/breakout.gif" width="300">
+</p>
+<p float="left">
+<img src="videos/space.gif" width="300">
+<img src="videos/qbert.gif" width="300">
+</p>
+
