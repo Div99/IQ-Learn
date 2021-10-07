@@ -4,6 +4,7 @@
 (Code coming soon)
 
 
+## Imitation 
 **Reaching human-level performance on Atari with pure imitation:**
 
 <p float="left">
@@ -14,4 +15,9 @@
 <img src="videos/space.gif" width="250">
 <img src="videos/qbert.gif" width="250">
 </p>
+
+## Rewards
+Recovering environment rewards on GridWorld:
+
+![Grid](videos/grid.jpg)
 
