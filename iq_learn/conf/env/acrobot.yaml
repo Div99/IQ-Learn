@@ -1,0 +1,16 @@
+# @package _global_
+
+env:
+  name: Acrobot-v1
+  demo: Acrobot-v1_1000.pkl
+  learn_steps: 2e5
+  eval_interval: 1e3
+
+eval:
+  policy: 
+  demos: 1
+  subsample_freq: 5
+  threshold: 
+
+q_net:
+  _target_: agent.softq_models.OfflineQNetwork

@@ -1,0 +1,31 @@
+# @package _global_
+
+env:
+  name: PongNoFrameskip-v4
+  demo: PongNoFrameskip-v4_30
+  replay_mem: 100000
+  initial_mem: 5000
+  eps_steps: 1e6
+  eps_window: 10
+  learn_steps: 10e5
+  eval_interval: 5e3
+
+num_seed_steps: 1000
+log_interval: 20
+
+eval:
+  policy: 
+  demos: 20
+  subsample_freq: 1
+  threshold: 21
+  use_baselines: False
+  eps: 10
+
+agent:
+  critic_target_update_frequency: 1000
+
+train:
+  batch: 64
+
+q_net:
+  _target_: agent.softq_models.AtariQNetwork

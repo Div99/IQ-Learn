@@ -1,0 +1,16 @@
+# @package _global_
+
+env:
+  name: CartPole-v1
+  demo: CartPole-v1_1000
+  learn_steps: 1e5
+  eval_interval: 1e3
+
+eval:
+  policy: 
+  demos: 1
+  subsample_freq: 20
+  threshold: 500
+
+q_net:
+  _target_: agent.softq_models.OfflineQNetwork

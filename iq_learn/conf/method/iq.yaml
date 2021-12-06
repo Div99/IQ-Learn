@@ -1,0 +1,19 @@
+# @package _global_
+
+method:
+  type: iq
+  loss: v0
+
+  constrain: False
+  grad_pen: False
+  chi: False
+  tanh: False
+  regularize: False
+  div:
+
+
+  alpha: 0.5
+  lambda_gp: 10
+  mix_coeff: 1
+  
+  num_seed_steps: 0

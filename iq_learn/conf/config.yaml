@@ -1,0 +1,56 @@
+exp_name: ''
+project_name: ${env.name}
+
+cuda_deterministic: False
+device: ??? # to be specified later
+
+gamma: 0.99
+seed: 0
+pretrain: null
+
+num_seed_steps: 1000
+only_expert_states: False
+
+train:
+  batch: 32
+  use_target: False
+  soft_update: False
+
+eval:
+  policy: 
+  demos: 1
+  subsample_freq: 1
+  threshold:
+  use_baselines: False
+  eps: 10
+  transfer: False
+  expert_env: ''
+
+env:
+  replay_mem: 50000
+  initial_mem: 1280
+  update_steps: 4
+  eps_steps: 1000
+  eps_window: 100
+  learn_steps: 5e5
+  eval_interval: 5e3
+
+method:
+  type: iq
+
+# Extra args
+log_interval: 100  # Log every this many steps
+log_dir: logs/
+save_interval: 5 # Save networks every this many epochs
+hydra_base_dir: ""
+eval_only: False
+
+# Do offline learning
+offline: False
+# Number of actor updates per env step
+num_actor_updates: 1
+
+defaults:
+  - method: iq
+  - agent: softq
+  - env: cartpole

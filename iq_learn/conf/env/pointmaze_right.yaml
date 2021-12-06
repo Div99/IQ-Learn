@@ -1,0 +1,33 @@
+# @package _global_
+
+env:
+  name: PointMazeRight-v0
+  demo: PointMazeRight-v0_50.pkl
+
+  replay_mem: 1e6
+  initial_mem: 10000
+
+  eps_steps: 10000
+  eps_window: 100
+  learn_steps: 2e5
+  eval_interval: 5e3
+
+
+eval:
+  policy: 
+  demos: 50
+  subsample_freq: 1
+  threshold: -8
+  eps: 10
+
+agent:
+  name: sac
+
+train:
+  soft_update: true
+
+log_interval: 500  # Log every this many steps
+num_actor_updates: 4
+
+double_q_critic:
+  _target_: agent.sac_models.SingleQCritic

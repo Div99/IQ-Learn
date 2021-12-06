@@ -1,0 +1,43 @@
+# @package _global_
+
+agent:
+  name: sac
+  _target_: agent.sac.SAC
+  obs_dim: ??? # to be specified later
+  action_dim: ??? # to be specified later
+
+  critic_cfg: ${double_q_critic}
+  actor_cfg: ${diag_gaussian_actor}
+  init_temperature: 0.2
+
+  alpha_lr: 3e-4
+  alpha_betas: [0.9, 0.999]
+
+  actor_lr: 3e-4
+  actor_betas: [0.9, 0.999]
+  actor_update_frequency: 1
+
+  critic_lr: 3e-4
+  critic_betas: [0.9, 0.999]
+  critic_tau: 0.005
+  critic_target_update_frequency: 1
+
+  learnable_temperature: true
+
+  # Use either value_dice actor or normal SAC actor loss
+  vdice_actor: false
+
+double_q_critic:
+  _target_: agent.sac_models.DoubleQCritic
+  obs_dim: ${agent.obs_dim}
+  action_dim: ${agent.action_dim}
+  hidden_dim: 256
+  hidden_depth: 2
+
+diag_gaussian_actor:
+  _target_: agent.sac_models.DiagGaussianActor
+  obs_dim: ${agent.obs_dim}
+  action_dim: ${agent.action_dim}
+  hidden_dim: 256
+  hidden_depth: 2
+  log_std_bounds: [-5, 2]

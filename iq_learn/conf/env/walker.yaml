@@ -1,0 +1,37 @@
+# @package _global_
+
+env:
+  name: Walker2d-v2
+  demo: Walker2d-v2_25.pkl
+  # learn_steps: 1e5
+  # eval_interval: 1e3
+
+  replay_mem: 1e6
+  # initial_mem: 10000
+
+  eps_steps: 100000
+  eps_window: 10
+  learn_steps: 5e5
+  eval_interval: 5e3
+
+eval:
+  policy: 
+  demos: 1
+  subsample_freq: 1
+  threshold: 5000
+
+
+agent:
+  name: sac
+
+log_interval: 500  # Log every this many steps
+num_actor_updates: 1
+
+train:
+  soft_update: true
+  soft_update: true
+  batch: 256
+
+
+double_q_critic:
+  _target_: agent.sac_models.SingleQCritic

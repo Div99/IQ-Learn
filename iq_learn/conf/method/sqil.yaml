@@ -1,0 +1,14 @@
+# @package _global_
+
+method:
+  type: sqil
+  sqil_lmbda: 1
+
+  constrain: False
+  grad_pen: False
+  chi: False
+  tanh: False
+  regularize: False
+  div: 
+
+  lambda_gp: 1
