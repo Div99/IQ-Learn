@@ -1,0 +1,9 @@
+@inproceedings{
+garg2021iqlearn,
+title={{IQ}-Learn: Inverse soft-Q Learning for Imitation},
+author={Divyansh Garg and Shuvam Chakraborty and Chris Cundy and Jiaming Song and Stefano Ermon},
+booktitle={Advances in Neural Information Processing Systems},
+editor={A. Beygelzimer and Y. Dauphin and P. Liang and J. Wortman Vaughan},
+year={2021},
+url={https://openreview.net/forum?id=Aeo-xqtb5p}
+}
