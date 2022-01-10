@@ -1,11 +1,12 @@
-from torch.utils.tensorboard import SummaryWriter
 from collections import defaultdict
 import json
 import os
 import csv
 import shutil
 import torch
+import torchvision
 import numpy as np
+from torch.utils.tensorboard import SummaryWriter
 from termcolor import colored
 
 COMMON_TRAIN_FORMAT = [
@@ -24,12 +25,16 @@ COMMON_EVAL_FORMAT = [
 
 AGENT_TRAIN_FORMAT = {
     'sac': [
-        ('batch_reward', 'BR', 'float'),
+        # ('batch_reward', 'BR', 'float'),
         ('actor_loss', 'ALOSS', 'float'),
         ('critic_loss', 'CLOSS', 'float'),
         ('alpha_loss', 'TLOSS', 'float'),
         ('alpha_value', 'TVAL', 'float'),
         ('actor_entropy', 'AENT', 'float')
+    ],
+    'softq': [
+        # ('batch_reward', 'BR', 'float'),
+        ('critic_loss', 'CLOSS', 'float'),
     ]
 }
 
@@ -119,20 +124,24 @@ class Logger(object):
                  log_dir,
                  save_tb=False,
                  log_frequency=10000,
-                 agent='sac'):
+                 agent='sac',
+                 writer=None):
         self._log_dir = log_dir
         self._log_frequency = log_frequency
-        if save_tb:
-            tb_dir = os.path.join(log_dir, 'tb')
-            if os.path.exists(tb_dir):
-                try:
-                    shutil.rmtree(tb_dir)
-                except:
-                    print("logger.py warning: Unable to remove tb directory")
-                    pass
-            self._sw = SummaryWriter(tb_dir)
+        if writer:
+            self._sw = writer
         else:
-            self._sw = None
+            if save_tb:
+                tb_dir = os.path.join(log_dir, 'tb')
+                if os.path.exists(tb_dir):
+                    try:
+                        shutil.rmtree(tb_dir)
+                    except:
+                        print("logger.py warning: Unable to remove tb directory")
+                        pass
+                self._sw = SummaryWriter(tb_dir)
+            else:
+                self._sw = None
         # each agent has specific output format for training
         assert agent in AGENT_TRAIN_FORMAT
         train_format = COMMON_TRAIN_FORMAT + AGENT_TRAIN_FORMAT[agent]

@@ -7,7 +7,7 @@ from omegaconf import DictConfig, OmegaConf
 
 from make_envs import make_env
 from agent import make_agent
-from utils import eval_mode
+from utils.utils import eval_mode
 
 
 def get_args(cfg: DictConfig):

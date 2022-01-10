@@ -1,0 +1,71 @@
+wandb_version: 1
+
+_content:
+  desc: null
+  value:
+    agent: '{''name'': ''softq'', ''class'': ''agent.softq.SoftQ'', ''obs_dim'': ''???'',
+      ''action_dim'': ''???'', ''critic_cfg'': ''${q_net}'', ''critic_lr'': 0.0001,
+      ''critic_betas'': [0.9, 0.999], ''init_temp'': 0.01, ''critic_target_update_frequency'':
+      4, ''critic_tau'': 0.1}'
+    cuda_deterministic: 'False'
+    device: cpu
+    env: '{''replay_mem'': 50000, ''initial_mem'': 1280, ''eps_steps'': 1000, ''eps_window'':
+      100, ''learn_steps'': 200000.0, ''eval_interval'': 1000.0, ''name'': ''Acrobot-v1'',
+      ''demo'': ''Acrobot-v1_1000.pkl''}'
+    eval: '{''policy'': None, ''threshold'': None, ''use_baselines'': False, ''eps'':
+      10, ''transfer'': False, ''expert_env'': ''''}'
+    eval_only: 'False'
+    exp_name: ''
+    expert: '{''demos'': 10, ''subsample_freq'': 5}'
+    gamma: '0.99'
+    hydra_base_dir: /root/public-iq/scripts/outputs/2022-01-09/16-59-51
+    log_dir: logs/
+    log_interval: '100'
+    method: '{''type'': ''iq'', ''loss'': ''value_expert'', ''constrain'': False,
+      ''grad_pen'': False, ''chi'': True, ''tanh'': False, ''regularize'': False,
+      ''div'': None, ''alpha'': 0.5, ''lambda_gp'': 10, ''mix_coeff'': 1, ''num_seed_steps'':
+      0}'
+    num_actor_updates: '1'
+    num_seed_steps: '1000'
+    offline: 'False'
+    only_expert_states: 'False'
+    pretrain: None
+    project_name: ${env.name}
+    q_net: '{''_target_'': ''agent.softq_models.OfflineQNetwork'', ''obs_dim'': ''${agent.obs_dim}'',
+      ''action_dim'': ''${agent.action_dim}''}'
+    save_interval: '5'
+    seed: '0'
+    train: '{''batch'': 32, ''use_target'': False, ''soft_update'': False}'
+_metadata:
+  desc: null
+  value: 'ContainerMetadata(ref_type=<class ''dict''>, object_type=None, optional=True,
+    key=None, flags={''struct'': True}, resolver_cache=defaultdict(<class ''dict''>,
+    {''now'': {''%Y-%m-%d'': ''2022-01-09'', ''%H-%M-%S'': ''16-59-51''}}), key_type=None,
+    element_type=None)'
+_parent:
+  desc: null
+  value: null
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.9
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.8
+    start_time: 1641776392
+    t:
+      1:
+      - 1
+      - 2
+      - 3
+      2:
+      - 1
+      - 2
+      - 3
+      3:
+      - 16
+      4: 3.8.8
+      5: 0.12.9
+      8:
+      - 5

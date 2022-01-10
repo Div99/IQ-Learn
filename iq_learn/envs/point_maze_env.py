@@ -5,7 +5,7 @@ import mujoco_py
 # from mujoco_py.mjlib import mjlib
 import os
 
-import logger
+import utils.logger as logger
 
 from envs.dynamic_mjc.mjc_models import point_mass_maze
 

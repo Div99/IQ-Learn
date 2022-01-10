@@ -10,7 +10,7 @@ agent:
   critic_lr: 1e-4
   critic_betas: [0.9, 0.999]
 
-  init_temperature: 0.01
+  init_temp: 0.01
   critic_target_update_frequency: 4
   critic_tau: 0.1
 

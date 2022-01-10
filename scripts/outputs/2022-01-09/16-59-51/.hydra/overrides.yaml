@@ -1,0 +1,7 @@
+- agent=softq
+- env=acrobot
+- expert.demos=10
+- expert.subsample_freq=5
+- method.chi=True
+- method.loss=value_expert
+- seed=0

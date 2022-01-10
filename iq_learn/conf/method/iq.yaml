@@ -2,7 +2,7 @@
 
 method:
   type: iq
-  loss: v0
+  loss: value
 
   constrain: False
   grad_pen: False
@@ -10,7 +10,6 @@ method:
   tanh: False
   regularize: False
   div:
-
 
   alpha: 0.5
   lambda_gp: 10

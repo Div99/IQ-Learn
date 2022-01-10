@@ -6,7 +6,7 @@ from torch.distributions import Normal
 from torch import distributions as pyd
 from torch.autograd import Variable, grad
 
-import utils
+import utils.utils as utils
 
 LOG_SIG_MAX = 2
 LOG_SIG_MIN = -20

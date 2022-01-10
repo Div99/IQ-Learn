@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from torch.optim import Adam
 import hydra
 
-from utils import soft_update
+from utils.utils import soft_update
 
 
 class SAC(object):
@@ -30,7 +30,7 @@ class SAC(object):
 
         self.actor = hydra.utils.instantiate(agent_cfg.actor_cfg).to(self.device)
 
-        self.log_alpha = torch.tensor(np.log(agent_cfg.init_temperature)).to(self.device)
+        self.log_alpha = torch.tensor(np.log(agent_cfg.init_temp)).to(self.device)
         self.log_alpha.requires_grad = True
         # Target Entropy = −dim(A) (e.g. , -6 for HalfCheetah-v2) as given in the paper
         self.target_entropy = -action_dim

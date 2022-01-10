@@ -12,11 +12,12 @@ env:
   learn_steps: 2e5
   eval_interval: 5e3
 
+expert:
+  demos: 50
+  subsample_freq: 1
 
 eval:
   policy: 
-  demos: 50
-  subsample_freq: 1
   threshold: -8
   eps: 10
 

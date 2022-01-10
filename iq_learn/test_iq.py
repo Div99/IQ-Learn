@@ -5,15 +5,14 @@ import torch
 import numpy as np
 import os
 from omegaconf import DictConfig, OmegaConf
-
-from make_envs import make_env
-from agent import make_agent
-from utils import evaluate
 from scipy.stats import spearmanr, pearsonr
 import matplotlib.pyplot as plt
 import seaborn as sns
 import wandb
 
+from make_envs import make_env
+from agent import make_agent
+from utils.utils import evaluate
 
 def get_args(cfg: DictConfig):
     cfg.device = "cuda:0" if torch.cuda.is_available() else "cpu"

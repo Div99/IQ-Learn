@@ -20,7 +20,7 @@ class SoftQ(object):
         self.critic_tau = agent_cfg.critic_tau
 
         self.critic_target_update_frequency = agent_cfg.critic_target_update_frequency
-        self.log_alpha = torch.tensor(np.log(agent_cfg.init_temperature)).to(self.device)
+        self.log_alpha = torch.tensor(np.log(agent_cfg.init_temp)).to(self.device)
         self.q_net = hydra.utils.instantiate(
             agent_cfg.critic_cfg, args=args, device=self.device).to(self.device)
         self.target_net = hydra.utils.instantiate(agent_cfg.critic_cfg, args=args, device=self.device).to(
@@ -104,6 +104,8 @@ class SoftQ(object):
             y = reward + (1 - done) * self.gamma * next_v
 
         critic_loss = F.mse_loss(self.critic(obs, action), y)
+        logger.log('train_critic/loss', critic_loss, step)
+
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
         self.critic_optimizer.step()

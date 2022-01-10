@@ -4,7 +4,7 @@ import random
 import torch
 
 from wrappers.atari_wrapper import LazyFrames
-from expert.expert_dataset import ExpertDataset
+from dataset.expert_dataset import ExpertDataset
 
 
 class Memory(object):
@@ -52,12 +52,14 @@ class Memory(object):
         batch_state, batch_next_state, batch_action, batch_reward, batch_done = zip(
             *batch)
 
-        # Scale obs for atari
-        # TODO: Use flags
+        # Scale obs for atari. TODO: Use flags
         if isinstance(batch_state[0], LazyFrames):
+            # Use lazyframes for improved memory storage (same as original DQN)
             batch_state = np.array(batch_state) / 255.0
         if isinstance(batch_next_state[0], LazyFrames):
             batch_next_state = np.array(batch_next_state) / 255.0
+        batch_state = np.array(batch_state)
+        batch_next_state = np.array(batch_next_state)
 
         batch_state = torch.as_tensor(batch_state, dtype=torch.float, device=device)
         batch_next_state = torch.as_tensor(batch_next_state, dtype=torch.float, device=device)

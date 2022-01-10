@@ -1,6 +1,3 @@
-from utils import evaluate
-from agent import make_agent
-from make_envs import make_env
 from omegaconf import DictConfig, OmegaConf
 import torch
 import hydra
@@ -13,6 +10,11 @@ import pickle
 import matplotlib
 import os
 import wandb
+
+from utils.utils import evaluate
+from agent import make_agent
+from make_envs import make_env
+
 matplotlib.use('Agg')
 
 

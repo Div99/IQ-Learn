@@ -16,10 +16,12 @@ train:
   use_target: False
   soft_update: False
 
-eval:
-  policy: 
+expert:
   demos: 1
   subsample_freq: 1
+
+eval:
+  policy: 
   threshold:
   use_baselines: False
   eps: 10
@@ -29,7 +31,6 @@ eval:
 env:
   replay_mem: 50000
   initial_mem: 1280
-  update_steps: 4
   eps_steps: 1000
   eps_window: 100
   learn_steps: 5e5
