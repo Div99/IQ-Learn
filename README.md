@@ -1,11 +1,12 @@
-# Inverse Q-Learning
-Official code base for [IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142), *NeurIPS '21 Spotlight* 
+# Inverse Q-Learning (IQ-Learn)
+Official code base for **[IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142)**, ***NeurIPS '21 Spotlight***
+
+[**[Project Page](https://div99.github.io/IQ-Learn)**]
 
 ### Citation
 ```
-@inproceedings{
-garg2021iqlearn,
-title={{IQ}-Learn: Inverse soft-Q Learning for Imitation},
+@inproceedings{garg2021iqlearn,
+title={IQ-Learn: Inverse soft-Q Learning for Imitation},
 author={Divyansh Garg and Shuvam Chakraborty and Chris Cundy and Jiaming Song and Stefano Ermon},
 booktitle={Thirty-Fifth Conference on Neural Information Processing Systems},
 year={2021},
