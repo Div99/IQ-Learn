@@ -8,7 +8,7 @@ gamma: 0.99
 seed: 0
 pretrain: null
 
-num_seed_steps: 1000
+num_seed_steps: 0 # Don't need seeding for IL (Use 1000 for RL)
 only_expert_states: False
 
 train:

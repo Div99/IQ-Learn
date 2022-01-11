@@ -20,11 +20,17 @@
 
 We show some examples that push the boundaries of imitation learning using IQ-Learn:
 
-1. On CartPole-v1 using 1 demo subsampled 20 times with fully *offline* imitation
-![CartPole Example]('../docs/cartpole_example.png') \
-IQ-Learn is the only method thats reaches the expert env reward 500 (requiring only 3000 training steps and less than 30 secs!!)
+### 1. CartPole-v1 using 1 demo subsampled 20 times with fully *offline* imitation  
 
-2. 
+```
+python train_iq.py agent=softq method=iq env=cartpole  expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
+```
+
+IQ-Learn is the only method thats reaches the expert env reward of **500** (requiring only 3k training steps and less than 30 secs!!)
+
+<img src="../docs/cartpole_example.png" width="400"> 
+
+
 
 ## Instructions
 
