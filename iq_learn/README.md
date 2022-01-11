@@ -1,13 +1,13 @@
 # Inverse Q-Learning (IQ-Learn)
 
-*IQ-Learn (NeurIPS '21 Spotlight):*  State-of-the-art framework for non-adversarial Imitation Learning.
+**IQ-Learn (NeurIPS '21 Spotlight):**  State-of-the-art framework for non-adversarial Imitation Learning
 
 ## Requirement
 
-- tensorboardX
 - pytorch (>= 1.4)
 - gym
 - wandb
+- tensorboardX
 - hydra-core
 
 ## Installation
@@ -23,12 +23,12 @@ We show some examples that push the boundaries of imitation learning using IQ-Le
 ### 1. CartPole-v1 using 1 demo subsampled 20 times with fully *offline* imitation  
 
 ```
-python train_iq.py agent=softq method=iq env=cartpole  expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
+python train_iq.py agent=softq method=iq env=cartpole expert.demos=1 expert.subsample_freq=20 agent.init_temp=0.001 method.chi=True method.loss=value_expert
 ```
 
 IQ-Learn is the only method thats reaches the expert env reward of **500** (requiring only 3k training steps and less than 30 secs!!)
 
-<img src="../docs/cartpole_example.png" width="400"> 
+<img src="../docs/cartpole_example.png" width="500"> 
 
 
 
@@ -42,6 +42,10 @@ Our training code is present in `train_iq.py` which implements **IQ-Learn** on t
 - To visualize our recovered state-only rewards on a toy Point Maze environment: 
     `python -m vis.maze_vis env=pointmaze_right eval.policy=pointmaze agent.init_temp=1 agent=sac double_q_critic._target_=agent.sac_models.DoubleQCritic`. <br>
     Reward visualizations are saved in `vis/outputs` directory
+
+## Contributions
+
+Contributions are very welcome. If you know how to make this code better, please open an issue. If you want to submit a pull request, please open an issue first. 
 
 ## License
 
