@@ -49,7 +49,7 @@ Contributions are very welcome. If you know how to make this code better, please
 
 ## License
 
-The code is made available for academic research use. Please see the [LICENSE](LICENSE.md) for the licensing terms for this code. 
+Currently, the code is made available for academic research use. Please see the [LICENSE](LICENSE.md) for the licensing terms for this code. 
 
 For any inquiry, contact: Div Garg ([divgarg@stanford.edu](mailto:divgarg@stanford.edu?subject=[GitHub]%IQ-Learn))
 
