@@ -4,7 +4,7 @@
 # Set expert.demos=1 for using one expert demo, reduce train.batch if the expert buffer is too small.
 
 # Set working directory to iq_learn
-cd ../iq_learn
+cd ..
 
 # Acrobot-v1
 python train_iq.py agent=softq env=acrobot expert.demos=10 expert.subsample_freq=5 method.chi=True method.loss=value_expert seed=0

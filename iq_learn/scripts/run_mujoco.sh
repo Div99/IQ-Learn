@@ -4,7 +4,7 @@
 # Set expert.demos=1 for using one expert demo.
 
 # Set working directory to iq_learn
-cd ../iq_learn
+cd ..
 
 # Hopper-v2
 python train_iq.py env=hopper agent=sac expert.demos=10 method.loss=v0 method.regularize=True agent.actor_lr=3e-5 seed=0

@@ -36,9 +36,9 @@ IQ-Learn is the only method thats reaches the expert env reward of **500** (requ
 
 Our training code is present in `train_iq.py` which implements **IQ-Learn** on top of DQN/SAC RL agents. <br> IQ-Learn simplify modifies the loss function for the critic network, compared to vanilla RL. The original RL training code is in `train_rl.py` for reference.
 
-- To reproduce our Offline IL experiments, see `run_offline.sh`
-- To reproduce our Mujoco experiments, see `run_mujoco.sh`
-- To reproduce Atari experiments, see `run_atari.sh`
+- To reproduce our Offline IL experiments, see `scripts/run_offline.sh`
+- To reproduce our Mujoco experiments, see `scripts/run_mujoco.sh`
+- To reproduce Atari experiments, see `scripts/run_atari.sh`
 - To visualize our recovered state-only rewards on a toy Point Maze environment: 
     `python -m vis.maze_vis env=pointmaze_right eval.policy=pointmaze agent.init_temp=1 agent=sac double_q_critic._target_=agent.sac_models.DoubleQCritic`. <br>
     Reward visualizations are saved in `vis/outputs` directory
