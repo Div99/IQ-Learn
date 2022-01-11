@@ -1,6 +1,6 @@
-# IQ-Learn
+# Inverse Q-Learning (IQ-Learn)
 
-*NeurIPS '21 Spotlight Work* 
+*IQ-Learn (NeurIPS '21 Spotlight):*  State-of-the-art framework for non-adversarial Imitation Learning.
 
 ## Requirement
 
@@ -8,22 +8,33 @@
 - pytorch (>= 1.4)
 - gym
 - wandb
+- hydra-core
 
 ## Installation
 
 - Make a conda environment and install dependencies: `pip install -r requirements.txt`
-- Download expert datasets from [Dropbox](https://www.dropbox.com/sh/xi92cwnrh0wqxa4/AABK9KFI-PxZ6fMaXJ2U8xKMa?dl=0)
 - Setup wandb project to log and visualize metrics
+- (Optional) Download expert datasets for Atari environments from [Dropbox](https://www.dropbox.com/sh/xi92cwnrh0wqxa4/AABK9KFI-PxZ6fMaXJ2U8xKMa?dl=0)
+
+## Examples
+
+We show some examples that push the boundaries of imitation learning using IQ-Learn:
+
+1. On CartPole-v1 using 1 demo subsampled 20 times with fully *offline* imitation
+![CartPole Example]('../docs/cartpole_example.png') \
+IQ-Learn is the only method thats reaches the expert env reward 500 (requiring only 3000 training steps and less than 30 secs!!)
+
+2. 
 
 ## Instructions
 
-Our training code is present in `train_iq.py` which implements IQ-Learn on top of DQN/SAC RL agents. The original RL training code is in `train_rl.py`.
+Our training code is present in `train_iq.py` which implements **IQ-Learn** on top of DQN/SAC RL agents. <br> IQ-Learn simplify modifies the loss function for the critic network, compared to vanilla RL. The original RL training code is in `train_rl.py` for reference.
 
 - To reproduce our Offline IL experiments, see `run_offline.sh`
 - To reproduce our Mujoco experiments, see `run_mujoco.sh`
 - To reproduce Atari experiments, see `run_atari.sh`
 - To visualize our recovered state-only rewards on a toy Point Maze environment: 
-    `python -m vis.maze_vis env=pointmaze_right eval.policy=pointmaze agent.init_temp=1 agent=sac double_q_critic._target_=agent.sac_models.DoubleQCritic`.
+    `python -m vis.maze_vis env=pointmaze_right eval.policy=pointmaze agent.init_temp=1 agent=sac double_q_critic._target_=agent.sac_models.DoubleQCritic`. <br>
     Reward visualizations are saved in `vis/outputs` directory
 
 ## License
