@@ -7,7 +7,9 @@ Update: **IQ-Learn** was recently used to create the **best AI agent** for playi
 
 [**[Project Page](https://div99.github.io/IQ-Learn)**]
 
-<img src="videos/method.png"> 
+<a href="https://div99.github.io/IQ-Learn">
+<img src="videos/method.png">
+</a>
 
 We introduce **Inverse Q-Learning (IQ-Learn)**, a **state-of-the-art** novel framework for Imitation Learning (IL), that directly learns **soft-Q** functions from expert data. IQ-Learn enables *non-adverserial* imitation learning, working on both offline and online IL settings. It is performant even with *very sparse* expert data, and scales to complex image-based environments, surpassing prior methods by more than **3x**. It is very simple to implement requiring **~15 lines of code** on top of existing RL methods.
 
