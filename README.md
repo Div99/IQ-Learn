@@ -1,7 +1,8 @@
 # Inverse Q-Learning (IQ-Learn)
-Official code base for **[IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142)**, ***NeurIPS '21 Spotlight***
+Official code base for **[IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142)**, ***NeurIPS '21 Spotlight*** 
 
-Update: **IQ-Learn** was recently used to create the **best AI agent** for playing Minecraft. Placing **#1** in *NeurIPS MineRL Basalt Challenge* using only human demos (Overall Leaderboard Rank **#2**)
+**IQ-Learn** is an easy-to-use algorithm that's a drop-in replacement to methods like Behavior Cloning and GAIL, to boost your imitation learning pipelines! \
+Update: **IQ-Learn** was recently used to create the **best AI agent for playing Minecraft**. Placing **#1** in *NeurIPS MineRL Basalt Challenge* using only human demos (Overall Leaderboard Rank **#2**)
 
 #
 
@@ -13,7 +14,7 @@ Update: **IQ-Learn** was recently used to create the **best AI agent** for playi
 
 We introduce **Inverse Q-Learning (IQ-Learn)**, a **state-of-the-art** novel framework for Imitation Learning (IL), that directly learns **soft-Q** functions from expert data. IQ-Learn enables *non-adverserial* imitation learning, working on both offline and online IL settings. It is performant even with *very sparse* expert data, and scales to complex image-based environments, surpassing prior methods by more than **3x**. It is very simple to implement requiring **~15 lines of code** on top of existing RL methods.
 
-Inverse Q-Learning is theoretically equivalent to *Inverse Reinforcement learning*, i.e. learning rewards from expert data. However, it is much more powerful in practice. It admits very simple non-adverserial training and works on complete offline IL settings (without any access to the environment).
+Inverse Q-Learning is theoretically equivalent to *Inverse Reinforcement learning*, i.e. learning rewards from expert data. However, it is much more powerful in practice. It admits very simple non-adverserial training and works on complete offline IL settings (without any access to the environment), greatly exceeding Behavior Cloning.
 
 **IQ-Learn** is the successor to Adversarial Imitation Learning methods like [GAIL](https://arxiv.org/abs/1606.03476) (coming from the same lab).\
 It extends the theoretical framework for Inverse RL to non-adverserial and scalable learning, for the *first-time* showing guaranteed convergence.
@@ -39,6 +40,7 @@ We introduce a method for dynamics-aware IL which avoids adversarial training by
 
 ## Key Advantages
 
+✅  Drop-in replacement to Behavior Cloning \
 ✅  Non-adverserial online IL (Successor to [GAIL](https://arxiv.org/abs/1606.03476) & [AIRL](https://arxiv.org/abs/1710.11248)) \
 ✅  Simple to implement  \
 ✅  Performant with very sparse data (single expert demo) \
