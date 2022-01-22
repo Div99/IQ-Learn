@@ -1,7 +1,8 @@
 # Inverse Q-Learning (IQ-Learn)
 Official code base for **[IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142)**, ***NeurIPS '21 Spotlight*** 
 
-**IQ-Learn** is an easy-to-use algorithm that's a drop-in replacement to methods like Behavior Cloning and GAIL, to boost your imitation learning pipelines! \
+**IQ-Learn** is an easy-to-use algorithm that's a drop-in replacement to methods like Behavior Cloning and GAIL, to boost your imitation learning pipelines! 
+
 Update: **IQ-Learn** was recently used to create the **best AI agent for playing Minecraft**. Placing **#1** in *NeurIPS MineRL Basalt Challenge* using only human demos (Overall Leaderboard Rank **#2**)
 
 #
