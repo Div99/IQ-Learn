@@ -12,105 +12,138 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
 		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<link href="style.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+		rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
+		rel="stylesheet" type="text/css">
 
 	<title>IQ-Learn: Inverse soft-Q Learning for Imitation</title>
-	<meta property="og:image" content="https://div99.github.io/W-Stereo-Disp/docs/teaser.gif">
+	<meta property="og:image" content="https://div99.github.io/IQ-Learn/docs/teaser.gif">
 	<meta property="og:title" content="IQ-Learn: Inverse soft-Q Learning for Imitation">
 </head>
 
 <body data-new-gr-c-s-check-loaded="14.984.0" data-gr-ext-installed="">
 	<br>
 	<center>
-		<span style="font-size:42px">IQ-Learn: Inverse soft-Q Learning for Imitation</span>
-		<br>
-		<table align="center" width="1030px">
+		<div id="hero">
+			<h1>IQ-Learn: Inverse soft-Q Learning for Imitation</h1>
+			<div class="authors">
+				<table align="center" width="1030px">
+					<tbody>
+						<tr>
+							<td align="center" width="300px">
+								<center>
+									<span><a href="https://divyanshgarg.com/">Divyansh
+											Garg</a><sup>1<sup></span>
+								</center>
+							</td>
+							<td align="center" width="300px">
+								<center>
+									<span><a href="https://www.linkedin.com/in/shuvam-chakraborty-458631121/">Shuvam
+											Chakraborty</a><sup>1<sup></span>
+								</center>
+							</td>
+							<td align="center" width="300px">
+								<center>
+									<span><a href="https://cundy.me/">Chris
+											Cundy</a><sup>1<sup></span>
+								</center>
+							</td>
+							<td align="center" width="300px">
+								<center>
+									<span><a href="https://tsong.me/">Jiaming
+											Song</a><sup>1<sup></span>
+								</center>
+							</td>
+							<td align=" center" width="300px">
+								<center>
+									<span><a href="https://cs.stanford.edu/~ermon/">Stefano
+											Ermon</a><sup>1<sup></span>
+								</center>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<table align="center" width="700px">
+				<tbody>
+					<tr>
+						<td align="center" width="200px">
+							<center>
+								<span style="font-size:20px">Stanford University<sup>1</sup></span>
+							</center>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table align="center" width="800px">
+				<tbody>
+					<tr>
+						<td align="center" width="150px">
+							<center>
+								<span style="font-size:25px">In NeurIPS 2021 <b><em>(Spotlight)</em></b></span>
+								</span>
+							</center>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	</center>
+	<center>
+		<table style="margin-top: 20px">
 			<tbody>
 				<tr>
-					<td align="center" width="300px">
-						<center>
-							<span style="font-size:20px"><a href="https://divyanshgarg.com/">Divyansh
-									Garg</a><sup>1<sup></span>
+					<td>
+						<center><a href="https://arxiv.org/abs/2106.12142" target="_blank" class="nav-link link"><img
+									class="filter-blue" src="icons/paper_icon.svg" width="48" height="48"><br>Paper</a>
 						</center>
 					</td>
-					<td align="center" width="300px">
-						<center>
-							<span style="font-size:20px"><a
-									href="https://www.linkedin.com/in/shuvam-chakraborty-458631121/">Shuvam
-									Chakraborty</a><sup>1<sup></span>
+					<td>
+						<center><a href="https://github.com/Div99/IQ-Learn" target="_blank" class="nav-link link"><img
+									class="filter-blue" src="icons/github.svg" width="48" height="48"><br>Code<br></a>
 						</center>
 					</td>
-					<td align="center" width="300px">
-						<center>
-							<span style="font-size:20px"><a href="https://cundy.me/">Chris
-									Cundy</a><sup>1<sup></span>
-						</center>
-					</td>
-					<td align="center" width="300px">
-						<center>
-							<span style="font-size:20px"><a href="https://tsong.me/">Jiaming
-									Song</a><sup>1<sup></span>
-						</center>
-					</td>
-					<td align=" center" width="300px">
-						<center>
-							<span style="font-size:20px"><a href="https://cs.stanford.edu/~ermon/">Stefano
-									Ermon</a><sup>1<sup></span>
-						</center>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<table align="center" width="700px">
-			<tbody>
-				<tr>
-					<td align="center" width="200px">
-						<center>
-							<span style="font-size:20px">Stanford University<sup>1</sup></span>
-						</center>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-		<table align="center" width="800px">
-			<tbody>
-				<tr>
-					<td align="center" width="150px">
-						<center>
-							<span style="font-size:20px">In NeurIPS 2021 <b><em>(Spotlight)</em></b></span>
-							</span>
-						</center>
+					<td>
+						<center><a
+								href="https://slideslive.com/embed/presentation/38967041?embed_parent_url=https%3A%2F%2Fneurips.cc%2Fvirtual%2F2021%2Fposter%2F26537&embed_container_origin=https%3A%2F%2Fneurips.cc&embed_container_id=presentation-embed-38967041&auto_load=true&auto_play=false&zoom_ratio=&disable_fullscreen=false&locale=en&vertical_enabled=true&vertical_enabled_on_mobile=false&allow_hidden_controls_when_paused=true&fit_to_viewport=true&user_uuid=2f7f8b9e-d23a-478f-ad00-f0905aa4836d"
+								target="_blank" class="nav-link link"><img class="filter-blue" src="icons/youtube.svg"
+									width="48" height="48"><br>Talk<br></a></center>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</center><br>
+	</div>
 	<!-- <table align="center" width="650px">
-	<tbody><tr>
-		<td align="center" width="150px">
-			<center>
-			<span style="font-size:20px"><a href="https://github.com/Div99/W-Stereo-Disp"> [GitHub]</a></span>
-			</center>
-		</td>
-		<td align="center" width="150px">
-			<center>
-			<span style="font-size:20px"><a href="https://slideslive.com/38937842"> [Talk]</a></span>
-			</center>
-		</td>
-		<td align="center" width="150px">
-			<center>
-			<span style="font-size:20px"><a href="https://arxiv.org/abs/2007.03085"> [Paper]</a></span>
-			</center>
-		</td>
-		<td align="center" width="150px">
-			<center>
-			<span style="font-size:20px"><a href="poster.pdf"> [Poster]</a></span>
-			</center>
-		</td>
-	</tr>
-	<tr>
-	</tr>
-</tbody>
-</table> -->
+		<tbody>
+			<tr>
+				<td align="center" width="150px">
+					<center>
+						<span style="font-size:20px"><a href="https://github.com/Div99/W-Stereo-Disp">
+								[GitHub]</a></span>
+					</center>
+				</td>
+				<td align="center" width="150px">
+					<center>
+						<span style="font-size:20px"><a href="https://slideslive.com/38937842"> [Talk]</a></span>
+					</center>
+				</td>
+				<td align="center" width="150px">
+					<center>
+						<span style="font-size:20px"><a href="https://arxiv.org/abs/2007.03085"> [Paper]</a></span>
+					</center>
+				</td>
+				<td align="center" width="150px">
+					<center>
+						<span style="font-size:20px"><a href="poster.pdf"> [Poster]</a></span>
+					</center>
+				</td>
+			</tr>
+			<tr>
+			</tr>
+		</tbody>
+	</table> -->
 	<!--   		  <br><br>
 <hr> -->
 
@@ -119,21 +152,23 @@
 			<tr>
 				<td width="400px">
 					<center>
-						<img src="teaser.gif" height="600px" style="padding-bottom: 10px;"><br>
+						<img class="img-banner" src="teaser.gif"><br>
 					</center>
 				</td>
 			</tr>
 			<tr>
-				<td width="300px">
+				<td width=" 300px">
 					<center>
-						<div style="font-size:16px; padding-bottom: 10px">
+						<div style="font-size:17px; padding-bottom: 10px">
 							<i>IQ-Learn reaching human performance on Atari through
 								pure imitation<br></i>
 						</div>
-						<span style="font-size:14px;"><i>Showing <span class=" text-primary">Pong</span> (Top Left),
-								<span class="text-danger">Breakout</span> (Top Right), <span class="text-success">Space
+						<span style="font-size:15px;"><i>Showing <span class=" text-primary bold">Pong</span> (Top
+								Left),
+								<span class="text-danger bold">Breakout</span> (Top Right), <span
+									class="text-success bold">Space
 									Invaders</span> (Bottom Left) ,
-								<span class="text-info">QBert</span> (Bottom Right).</i>
+								<span class="text-info bold">QBert</span> (Bottom Right).</i>
 						</span>
 					</center>
 				</td>
@@ -197,34 +232,12 @@
 							allow="autoplay; fullscreen" allowfullscreen="" webkitallowfullscreen=""
 							mozallowfullscreen="" style="margin: 0px auto; display: block; width: 100%;"></iframe>
 					</div>
-					<!-- <iframe width="800" height="450"
-						src="https://slideslive.com/embed/presentation/38967041?embed_parent_url=https%3A%2F%2Fneurips.cc%2Fvirtual%2F2021%2Fposter%2F26537&embed_container_origin=https%3A%2F%2Fneurips.cc&embed_container_id=presentation-embed-38967041&auto_load=true&auto_play=false&zoom_ratio=&disable_fullscreen=false&locale=en&vertical_enabled=true&vertical_enabled_on_mobile=false&allow_hidden_controls_when_paused=true&fit_to_viewport=true&user_uuid=2f7f8b9e-d23a-478f-ad00-f0905aa4836d"
-						frameborder="0" allowfullscreen=""></iframe> -->
-					<!-- <div id="presentation-embed-38937842"></div>
-
-<script src='https://slideslive.com/embed_presentation.js'></script>
-<script>
-    embed = new SlidesLiveEmbed('presentation-embed-38937842', {
-        presentationId: '38937842',
-        autoPlay: false, // change to true to autoplay the embedded presentation
-        verticalEnabled: true
-    });
-</script> -->
 				</td>
 			</tr>
-			<!-- <tr>
-				<td align="center" width="600px">
-					<span style="font-size:22px">NeurIPS Presentation 2021, also hosted on [<a
-							href="https://slideslive.com/38937842">SlidesLive</a>]</span>
-				</td>
-			</tr> -->
+
 		</tbody>
 	</table>
-	<br>
-	<!-- <center></center> -->
-	<br>
 	<hr>
-	<!-- NETWORK ARCHITECTURE, TRY THE MODEL -->
 	<center>
 		<h1>Approach</h1>
 	</center>
@@ -290,19 +303,19 @@
 	<table align="center" width="500px">
 		<tbody>
 			<tr>
-				<td><span style="font-size:14pt">
+				<td><span style="font-size:24px">
 						<center>
 							<a
 								href="https://proceedings.neurips.cc/paper/2021/file/210f760a89db30aa72ca258a3483cc7f-Paper.pdf">[Paper]</a>
 						</center>
 					</span></td>
-				<td><span style="font-size:14pt">
+				<td><span style="font-size:24px">
 						<center>
 							<a
 								href="https://proceedings.neurips.cc/paper/2021/file/210f760a89db30aa72ca258a3483cc7f-Supplemental.pdf">[Suppl]</a>
 						</center>
 					</span></td>
-				<td><span style="font-size:14pt">
+				<td><span style="font-size:24px">
 						<center>
 							<a href="neurips_2021_iq.txt">[Bibtex]</a>
 						</center>
