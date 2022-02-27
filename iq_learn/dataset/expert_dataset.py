@@ -10,13 +10,15 @@ import os
 class ExpertDataset(Dataset):
     """Dataset for expert trajectories.
 
-    Assumes expert dataset is a dict with keys {states, actions, rewards, lengths} with values
-    of given shapes below with 0 padding if length of trajectory is less than max_length.
+    Assumes expert dataset is a dict with keys {states, actions, rewards, lengths} with values containing a list of
+    expert attributes of given shapes below. Each trajectory can be of different length.
+
+    Expert rewards are not required but can be useful for evaluation.
 
         shapes:
-            expert["states"] =  [num_experts, max_length, state_space]
-            expert["actions"] =  [num_experts, max_length, action_space]
-            expert["rewards"] =  [num_experts, max_length]
+            expert["states"]  =  [num_experts, traj_length, state_space]
+            expert["actions"] =  [num_experts, traj_length, action_space]
+            expert["rewards"] =  [num_experts, traj_length]
             expert["lengths"] =  [num_experts]
     """
 

@@ -31,5 +31,5 @@ train:
   soft_update: true
   batch: 256
 
-double_q_critic:
+q_net:
   _target_: agent.sac_models.SingleQCritic

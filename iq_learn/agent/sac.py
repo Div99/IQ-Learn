@@ -72,46 +72,6 @@ class SAC(object):
         # assert action.ndim == 2 and action.shape[0] == 1
         return action.detach().cpu().numpy()[0]
 
-    def sample_actions(self, obs, num_actions):
-        """For CQL style training"""
-        obs_temp = obs.unsqueeze(1).repeat(1, num_actions, 1).view(
-            obs.shape[0] * num_actions, obs.shape[1])
-        action, log_prob, _ = self.actor.sample(obs_temp)
-        return action, log_prob.view(obs.shape[0], num_actions, 1)
-
-    def _get_tensor_values(self, obs, actions, network=None):
-        """For CQL style training"""
-        action_shape = actions.shape[0]
-        obs_shape = obs.shape[0]
-        num_repeat = int(action_shape / obs_shape)
-        obs_temp = obs.unsqueeze(1).repeat(1, num_repeat, 1).view(
-            obs.shape[0] * num_repeat, obs.shape[1])
-        preds = network(obs_temp, actions)
-        preds = preds.view(obs.shape[0], num_repeat, 1)
-        return preds
-
-    def cqlV(self, obs, network, num_random=10):
-        # importance sampled version
-        # action, log_prob, _ = self.actor.sample(obs)
-        action, log_prob = self.sample_actions(obs, num_random)
-        current_Q = self._get_tensor_values(obs, action, network)
-
-        random_action = torch.FloatTensor(
-            obs.shape[0] * num_random, action.shape[-1]).uniform_(-1, 1).to(self.device)
-
-        random_density = np.log(0.5 ** action.shape[-1])
-
-        rand_Q = self._get_tensor_values(obs, random_action, network)
-
-        alpha = self.alpha.detach()
-
-        cat_Q = torch.cat(
-            [rand_Q - alpha * random_density, current_Q - alpha * log_prob.detach()], 1
-        )
-
-        cql_V = torch.logsumexp(cat_Q / alpha, dim=1).mean() * alpha
-        return cql_V
-
     def getV(self, obs):
         action, log_prob, _ = self.actor.sample(obs)
         current_Q = self.critic(obs, action)
@@ -141,11 +101,7 @@ class SAC(object):
 
         return losses
 
-    def update_critic(self, obs, action, reward, next_obs, done, logger,
-                      step):
-        # dist = self.actor(next_obs)
-        # next_action = dist.rsample()
-        # log_prob = dist.log_prob(next_action).sum(-1, keepdim=True)
+    def update_critic(self, obs, action, reward, next_obs, done, logger, step):
 
         with torch.no_grad():
             next_action, log_prob, _ = self.actor.sample(next_obs)
@@ -159,7 +115,6 @@ class SAC(object):
         q1_loss = F.mse_loss(current_Q1, target_Q)
         q2_loss = F.mse_loss(current_Q2, target_Q)
         critic_loss = q1_loss + q2_loss
-        # logger.log('train_critic/loss', critic_loss, step)
 
         # Optimize the critic
         self.critic_optimizer.zero_grad()
@@ -173,19 +128,14 @@ class SAC(object):
             'loss/critic': critic_loss.item()}
 
     def update_actor_and_alpha(self, obs, logger, step):
-        # dist = self.actor(obs)
-        # action = dist.rsample()
-        # log_prob = dist.log_prob(action).sum(-1, keepdim=True)
-        # actor_Q1, actor_Q2 = self.critic(obs, action)
-
         action, log_prob, _ = self.actor.sample(obs)
         actor_Q = self.critic(obs, action)
 
         actor_loss = (self.alpha.detach() * log_prob - actor_Q).mean()
 
-        # logger.log('train_actor/loss', actor_loss, step)
-        # logger.log('train_actor/target_entropy', self.target_entropy, step)
-        # logger.log('train_actor/entropy', -log_prob.mean(), step)
+        logger.log('train/actor_loss', actor_loss, step)
+        logger.log('train/target_entropy', self.target_entropy, step)
+        logger.log('train/actor_entropy', -log_prob.mean(), step)
 
         # optimize the actor
         self.actor_optimizer.zero_grad()
@@ -196,14 +146,15 @@ class SAC(object):
             'loss/actor': actor_loss.item(),
             'actor_loss/target_entropy': self.target_entropy,
             'actor_loss/entropy': -log_prob.mean().item()}
-        # self.actor.log(logger, step)
 
+        # self.actor.log(logger, step)
         if self.learnable_temperature:
             self.log_alpha_optimizer.zero_grad()
             alpha_loss = (self.alpha *
                           (-log_prob - self.target_entropy).detach()).mean()
-            # logger.log('train_alpha/loss', alpha_loss, step)
-            # logger.log('train_alpha/value', self.alpha, step)
+            logger.log('train/alpha)loss', alpha_loss, step)
+            logger.log('train/alpha_value', self.alpha, step)
+
             alpha_loss.backward()
             self.log_alpha_optimizer.step()
 
@@ -217,6 +168,7 @@ class SAC(object):
     def save(self, path, suffix=""):
         actor_path = f"{path}{suffix}_actor"
         critic_path = f"{path}{suffix}_critic"
+
         # print('Saving models to {} and {}'.format(actor_path, critic_path))
         torch.save(self.actor.state_dict(), actor_path)
         torch.save(self.critic.state_dict(), critic_path)
@@ -244,3 +196,40 @@ class SAC(object):
         with torch.no_grad():
             v = self.getV(state).squeeze()
         return v.cpu().numpy()
+
+    def sample_actions(self, obs, num_actions):
+        """For CQL style training."""
+        obs_temp = obs.unsqueeze(1).repeat(1, num_actions, 1).view(
+            obs.shape[0] * num_actions, obs.shape[1])
+        action, log_prob, _ = self.actor.sample(obs_temp)
+        return action, log_prob.view(obs.shape[0], num_actions, 1)
+
+    def _get_tensor_values(self, obs, actions, network=None):
+        """For CQL style training."""
+        action_shape = actions.shape[0]
+        obs_shape = obs.shape[0]
+        num_repeat = int(action_shape / obs_shape)
+        obs_temp = obs.unsqueeze(1).repeat(1, num_repeat, 1).view(
+            obs.shape[0] * num_repeat, obs.shape[1])
+        preds = network(obs_temp, actions)
+        preds = preds.view(obs.shape[0], num_repeat, 1)
+        return preds
+
+    def cqlV(self, obs, network, num_random=10):
+        """For CQL style training."""
+        # importance sampled version
+        action, log_prob = self.sample_actions(obs, num_random)
+        current_Q = self._get_tensor_values(obs, action, network)
+
+        random_action = torch.FloatTensor(
+            obs.shape[0] * num_random, action.shape[-1]).uniform_(-1, 1).to(self.device)
+
+        random_density = np.log(0.5 ** action.shape[-1])
+        rand_Q = self._get_tensor_values(obs, random_action, network)
+        alpha = self.alpha.detach()
+
+        cat_Q = torch.cat(
+            [rand_Q - alpha * random_density, current_Q - alpha * log_prob.detach()], 1
+        )
+        cql_V = torch.logsumexp(cat_Q / alpha, dim=1).mean() * alpha
+        return cql_V

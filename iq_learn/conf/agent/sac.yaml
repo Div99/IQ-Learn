@@ -6,7 +6,7 @@ agent:
   obs_dim: ??? # to be specified later
   action_dim: ??? # to be specified later
 
-  critic_cfg: ${double_q_critic}
+  critic_cfg: ${q_net}
   actor_cfg: ${diag_gaussian_actor}
   init_temp: 0.2
 
@@ -27,7 +27,7 @@ agent:
   # Use either value_dice actor or normal SAC actor loss
   vdice_actor: false
 
-double_q_critic:
+q_net:
   _target_: agent.sac_models.DoubleQCritic
   obs_dim: ${agent.obs_dim}
   action_dim: ${agent.action_dim}

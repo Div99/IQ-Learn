@@ -60,6 +60,7 @@ class Memory(object):
             batch_next_state = np.array(batch_next_state) / 255.0
         batch_state = np.array(batch_state)
         batch_next_state = np.array(batch_next_state)
+        batch_action = np.array(batch_action)
 
         batch_state = torch.as_tensor(batch_state, dtype=torch.float, device=device)
         batch_next_state = torch.as_tensor(batch_next_state, dtype=torch.float, device=device)

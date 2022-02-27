@@ -111,9 +111,11 @@ def get_concat_samples(policy_batch, expert_batch, args):
 
     expert_batch_state, expert_batch_next_state, expert_batch_action, expert_batch_reward, expert_batch_done = expert_batch
 
-    if not args.method.type == "sqil":
-        # convert expert reward to 0.
-        expert_batch_reward = torch.zeros_like(expert_batch_reward)
+    if args.method.type == "sqil":
+        # convert policy reward to 0
+        online_batch_reward = torch.zeros_like(online_batch_reward)
+        # convert expert reward to 1
+        expert_batch_reward = torch.ones_like(expert_batch_reward)
 
     batch_state = torch.cat([online_batch_state, expert_batch_state], dim=0)
     batch_next_state = torch.cat(
@@ -135,3 +137,8 @@ def save_state(tensor, path, num_states=5):
     images = tensor.reshape(-1, 1, H, W).cpu()
     save_image(images, path, nrow=num_states)
     # make_grid(images)
+
+
+def average_dicts(dict1, dict2):
+    return {key: 1/2 * (dict1.get(key, 0) + dict2.get(key, 0))
+                     for key in set(dict1) | set(dict2)}

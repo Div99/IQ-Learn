@@ -40,7 +40,7 @@ Our training code is present in `train_iq.py` which implements **IQ-Learn** on t
 - To reproduce our Mujoco experiments, see `scripts/run_mujoco.sh`
 - To reproduce Atari experiments, see `scripts/run_atari.sh`
 - To visualize our recovered state-only rewards on a toy Point Maze environment: 
-    `python -m vis.maze_vis env=pointmaze_right eval.policy=pointmaze agent.init_temp=1 agent=sac double_q_critic._target_=agent.sac_models.DoubleQCritic`. <br>
+    `python -m vis.maze_vis env=pointmaze_right eval.policy=pointmaze agent.init_temp=1 agent=sac.q_net._target_=agent.sac_models.DoubleQCritic`. <br>
     Reward visualizations are saved in `vis/outputs` directory
 
 ## Contributions

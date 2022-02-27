@@ -85,6 +85,38 @@ class DoubleQCritic(nn.Module):
         return grad_pen
 
 
+class DoubleQCriticMax(nn.Module):
+    def __init__(self, obs_dim, action_dim, hidden_dim, hidden_depth, args):
+        super(DoubleQCriticMax, self).__init__()
+        self.obs_dim = obs_dim
+        self.action_dim = action_dim
+        self.args = args
+
+        # Q1 architecture
+        self.Q1 = utils.mlp(obs_dim + action_dim, hidden_dim, 1, hidden_depth)
+
+        # Q2 architecture
+        self.Q2 = utils.mlp(obs_dim + action_dim, hidden_dim, 1, hidden_depth)
+
+        self.apply(orthogonal_init_)
+
+    def forward(self, obs, action, both=False):
+        assert obs.size(0) == action.size(0)
+
+        obs_action = torch.cat([obs, action], dim=-1)
+        q1 = self.Q1(obs_action)
+        q2 = self.Q2(obs_action)
+
+        if self.args.method.tanh:
+            q1 = torch.tanh(q1) * 1/(1-self.args.gamma)
+            q2 = torch.tanh(q2) * 1/(1-self.args.gamma)
+
+        if both:
+            return q1, q2
+        else:
+            return torch.max(q1, q2)
+
+
 class SingleQCritic(nn.Module):
     def __init__(self, obs_dim, action_dim, hidden_dim, hidden_depth, args):
         super(SingleQCritic, self).__init__()

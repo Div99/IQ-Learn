@@ -18,8 +18,9 @@ from wrappers.atari_wrapper import LazyFrames
 from make_envs import make_env
 from dataset.memory import Memory
 from agent import make_agent
-from utils.utils import eval_mode, get_concat_samples, evaluate, soft_update, hard_update
+from utils.utils import eval_mode, average_dicts, get_concat_samples, evaluate, soft_update, hard_update
 from utils.logger import Logger
+from iq import iq_loss
 
 torch.set_num_threads(2)
 
@@ -70,7 +71,7 @@ def main(cfg: DictConfig):
             print("=> loading pretrain '{}'".format(args.pretrain))
             agent.load(pretrain_path)
         else:
-            print("[Attention]: Do not find checkpoint {}".format(args.pretrain))
+            print("[Attention]: Did not find checkpoint {}".format(args.pretrain))
 
     # Load expert data
     expert_memory_replay = Memory(REPLAY_MEMORY//2, args.seed)
@@ -162,11 +163,11 @@ def main(cfg: DictConfig):
                     return
 
                 ######
-                # IRL Modification
-                agent.irl_update = types.MethodType(irl_update, agent)
-                agent.ilr_update_critic = types.MethodType(ilr_update_critic, agent)
-                losses = agent.irl_update(online_memory_replay,
-                                          expert_memory_replay, logger, learn_steps)
+                # IQ-Learn Modification
+                agent.iq_update = types.MethodType(iq_update, agent)
+                agent.iq_update_critic = types.MethodType(iq_update_critic, agent)
+                losses = agent.iq_update(online_memory_replay,
+                                         expert_memory_replay, logger, learn_steps)
                 ######
 
                 if learn_steps % args.log_interval == 0:
@@ -210,10 +211,7 @@ def iq_learn_update(self, policy_batch, expert_batch, logger, step):
     obs, next_obs, action, reward, done, is_expert = get_concat_samples(
         policy_batch, expert_batch, args)
 
-    if self.actor:
-        policy_next_actions, policy_log_prob, _ = self.actor.sample(policy_next_obs)
-
-    losses = {}
+    loss_dict = {}
 
     ######
     # IQ-Learn minimal implementation with X^2 divergence (~15 lines)
@@ -242,8 +240,7 @@ def iq_learn_update(self, policy_batch, expert_batch, logger, step):
     return loss
 
 
-# Full IQ-Learn objective with other divergences and options
-def ilr_update_critic(self, policy_batch, expert_batch, logger, step):
+def iq_update_critic(self, policy_batch, expert_batch, logger, step):
     args = self.args
     policy_obs, policy_next_obs, policy_action, policy_reward, policy_done = policy_batch
     expert_obs, expert_next_obs, expert_action, expert_reward, expert_done = expert_batch
@@ -252,152 +249,43 @@ def ilr_update_critic(self, policy_batch, expert_batch, logger, step):
         # Use policy actions instead of experts actions for IL with only observations
         expert_batch = expert_obs, expert_next_obs, policy_action, expert_reward, expert_done
 
-    obs, next_obs, action, reward, done, is_expert = get_concat_samples(
-        policy_batch, expert_batch, args)
+    batch = get_concat_samples(policy_batch, expert_batch, args)
+    obs, next_obs, action = batch[0:3]
 
-    losses = {}
-    # keep track of v0
-    v0 = self.getV(expert_obs).mean()
-    losses['v0'] = v0.item()
-
-    if args.method.type == "sqil":
+    agent = self
+    current_V = self.getV(obs)
+    if args.train.use_target:
         with torch.no_grad():
-            target_Q = reward + (1 - done) * self.gamma * self.get_targetV(next_obs)
-
-        current_Q = self.critic(obs, action)
-        bell_error = F.mse_loss(current_Q, target_Q, reduction='none')
-        loss = (bell_error[is_expert]).mean() + \
-            args.method.sqil_lmbda * (bell_error[~is_expert]).mean()
-        losses['sqil_loss'] = loss.item()
-
-    elif args.method.type == "iq":
-        # our method, calculate 1st term of loss
-        #  -E_(ρ_expert)[Q(s, a) - γV(s')]
-        current_Q = self.critic(obs, action)
-        next_v = self.getV(next_obs)
-        y = (1 - done) * self.gamma * next_v
-
-        if args.train.use_target:
-            with torch.no_grad():
-                next_v = self.get_targetV(next_obs)
-                y = (1 - done) * self.gamma * next_v
-
-        reward = (current_Q - y)[is_expert]
-
-        with torch.no_grad():
-            if args.method.div == "hellinger":
-                phi_grad = 1/(1+reward)**2
-            elif args.method.div == "kl":
-                phi_grad = torch.exp(-reward-1)
-            elif args.method.div == "kl2":
-                phi_grad = F.softmax(-reward, dim=0) * reward.shape[0]
-            elif args.method.div == "kl_fix":
-                phi_grad = torch.exp(-reward)
-            elif args.method.div == "js":
-                phi_grad = torch.exp(-reward)/(2 - torch.exp(-reward))
-            else:
-                phi_grad = 1
-        loss = -(phi_grad * reward).mean()
-        losses['softq_loss'] = loss.item()
-
-        if args.method.loss == "v0":
-            # calculate 2nd term for our loss
-            # (1-γ)E_(ρ0)[V(s0)]
-            v0_loss = (1 - self.gamma) * v0
-            loss += v0_loss
-            losses['v0_loss'] = v0_loss.item()
-
-        elif args.method.loss == "value":
-            # alternative 2nd term for our loss (use expert and policy states)
-            # E_(ρ)[Q(s,a) - γV(s')]
-            value_loss = (self.getV(obs) - y).mean()
-            loss += value_loss
-            losses['value_loss'] = value_loss.item()
-
-        elif args.method.loss == "value_policy":
-            # alternative 2nd term for our loss (use only policy states)
-            # E_(ρ)[Q(s,a) - γV(s')]
-            value_loss = (self.getV(obs) - y)[~is_expert].mean()
-            loss += value_loss
-            losses['value_policy_loss'] = value_loss.item()
-
-        elif args.method.loss == "value_expert":
-            # alternative 2nd term for our loss (use only expert states)
-            # E_(ρ)[Q(s,a) - γV(s')]
-            value_loss = (self.getV(obs) - y)[is_expert].mean()
-            loss += value_loss
-            losses['value_loss'] = value_loss.item()
-
-        elif args.method.loss == "value_mix":
-            # alternative 2nd term for our loss (use expert and policy states)
-            # E_(ρ)[Q(s,a) - γV(s')]
-            w = args.method.mix_coeff
-            value_loss = (w * (self.getV(obs) - y)[is_expert] +
-                          (1-w) * (self.getV(obs) - y)[~is_expert]).mean()
-            loss += value_loss
-            losses['value_loss'] = value_loss.item()
-
-        elif args.method.loss == "skip":
-            # No loss
-            pass
+            next_V = self.get_targetV(next_obs)
     else:
-        raise ValueError(f'This method is not implemented: {args.method.type}')
+        next_V = self.getV(next_obs)
 
-    if args.method.grad_pen:
-        # add a gradient penalty to loss (W1 metric)
-        gp_loss = self.critic_net.grad_pen(expert_obs, expert_action,
-                                           policy_obs, policy_action, args.method.lambda_gp)
-        losses['gp_loss'] = gp_loss.item()
-        loss += gp_loss
-
-    if args.method.div == "chi" or args.method.chi:  # TODO: Deprecate method.chi argument for method.div
-        # Use χ2 divergence (adds a extra term to the loss)
-        if args.train.use_target:
-            with torch.no_grad():
-                next_v = self.get_targetV(next_obs)
-        else:
-            next_v = self.getV(next_obs)
-
-        y = (1 - done) * self.gamma * next_v
-
+    if "DoubleQCritic" in self.args.q_net._target_:
+        current_Q1, current_Q2 = self.critic(obs, action, both=True)
+        q1_loss, loss_dict1 = iq_loss(agent, current_Q1, current_V, next_V, batch)
+        q2_loss, loss_dict2 = iq_loss(agent, current_Q2, current_V, next_V, batch)
+        critic_loss = 1/2 * (q1_loss + q2_loss)
+        # merge loss dicts
+        loss_dict = average_dicts(loss_dict1, loss_dict2)
+    else:
         current_Q = self.critic(obs, action)
-        reward = current_Q - y
-        chi2_loss = 1/(4 * args.method.alpha) * (reward**2)[is_expert].mean()
-        loss += chi2_loss
-        losses['chi2_loss'] = chi2_loss.item()
+        critic_loss, loss_dict = iq_loss(agent, current_Q, current_V, next_V, batch)
 
-    if args.method.regularize:
-        # Use χ2 divergence (adds a extra term to the loss)
-        if args.train.use_target:
-            with torch.no_grad():
-                next_v = self.get_targetV(next_obs)
-        else:
-            next_v = self.getV(next_obs)
-
-        y = (1 - done) * self.gamma * next_v
-
-        current_Q = self.critic(obs, action)
-        reward = current_Q - y
-        chi2_loss = 1/(4 * args.method.alpha) * (reward**2).mean()
-        loss += chi2_loss
-        losses['regularize_loss'] = chi2_loss.item()
-
-    losses['total_loss'] = loss.item()
-    logger.log('train_critic/loss', loss, step)
+    logger.log('train/critic_loss', critic_loss, step)
 
     # Optimize the critic
     self.critic_optimizer.zero_grad()
-    loss.backward()
+    critic_loss.backward()
     # step critic
     self.critic_optimizer.step()
-    return losses
+    return loss_dict
 
 
-def irl_update(self, policy_buffer, expert_buffer, logger, step):
+def iq_update(self, policy_buffer, expert_buffer, logger, step):
     policy_batch = policy_buffer.get_samples(self.batch_size, self.device)
     expert_batch = expert_buffer.get_samples(self.batch_size, self.device)
 
-    losses = self.ilr_update_critic(policy_batch, expert_batch, logger, step)
+    losses = self.iq_update_critic(policy_batch, expert_batch, logger, step)
 
     if self.actor and step % self.actor_update_frequency == 0:
         if not self.args.agent.vdice_actor:
@@ -412,7 +300,6 @@ def irl_update(self, policy_buffer, expert_buffer, logger, step):
                 for i in range(self.args.num_actor_updates):
                     actor_alpha_losses = self.update_actor_and_alpha(obs, logger, step)
 
-            # actor_alpha_losses = self.update_actor_and_alpha(obs, logger, step)
             losses.update(actor_alpha_losses)
 
     if step % self.critic_target_update_frequency == 0:
