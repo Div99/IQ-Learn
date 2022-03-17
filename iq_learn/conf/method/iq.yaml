@@ -14,5 +14,3 @@ method:
   alpha: 0.5
   lambda_gp: 10
   mix_coeff: 1
-  
-  num_seed_steps: 0

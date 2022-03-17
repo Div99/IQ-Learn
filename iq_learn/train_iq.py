@@ -1,3 +1,9 @@
+"""
+Copyright 2022 Div Garg. All rights reserved.
+
+Example training code for IQ-Learn which minimially modifies `train_rl.py`.
+"""
+
 import datetime
 import os
 import random

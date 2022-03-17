@@ -1,6 +1,13 @@
 # Inverse Q-Learning (IQ-Learn)
 
-**IQ-Learn (NeurIPS '21 Spotlight):**  State-of-the-art framework for non-adversarial Imitation Learning
+## SOTA framework for non-adversarial Imitation Learning
+
+IQ-Learn enables very fast, scalable and stable imitation learning.
+Our IQ-Learn algorithm is present in `iq.py`. This file can be used standalone to add **IQ** to your IL & RL projects. 
+
+IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-policy) by changing the critic update loss to our proposed `iq_loss`. <br>
+(IQ has been successfully tested to work with Q-Learning, SAC, PPO, DDPG and Decision Transformer agents).
+
 
 ## Requirement
 
@@ -30,11 +37,20 @@ IQ-Learn is the only method thats reaches the expert env reward of **500** (requ
 
 <img src="../docs/cartpole_example.png" width="500"> 
 
+### 2. Playing Pong at human performance
+
+```
+python train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
+```
+
+IQ-Learn is the only method thats reaches the expert env reward of **21** (we find better hyperparams compared to the original paper)
+
+<img src="../docs/pong_example.png" width="500"> 
 
 
 ## Instructions
-
-Our training code is present in `train_iq.py` which implements **IQ-Learn** on top of DQN/SAC RL agents. <br> IQ-Learn simplify modifies the loss function for the critic network, compared to vanilla RL. The original RL training code is in `train_rl.py` for reference.
+We show example code for training Q-Learning and SAC agents with **IQ-Learn** in `train_iq`.py. We make minimum modifications to original RL training code present in `train_rl`.py and simply change the critic loss function.
+<!-- Our training code is present in `train_iq.py` which implements **IQ-Learn** on top of DQN/SAC RL agents by simply changing the Q-function update rule. RL training code is in `train_rl.py`. <br> IQ-Learn simplify modifies the loss function for the critic network, compared to vanilla RL. -->
 
 - To reproduce our Offline IL experiments, see `scripts/run_offline.sh`
 - To reproduce our Mujoco experiments, see `scripts/run_mujoco.sh`
@@ -49,7 +65,7 @@ Contributions are very welcome. If you know how to make this code better, please
 
 ## License
 
-Currently, the code is made available for academic research use. Please see the [LICENSE](LICENSE.md) for the licensing terms for this code. 
+The code is made available for academic, non-commercial usage. Please see the [LICENSE](LICENSE.md) for the licensing terms of IQ-Learn for commercial use or running it on your robots/creating new AI agents.
 
 For any inquiry, contact: Div Garg ([divgarg@stanford.edu](mailto:divgarg@stanford.edu?subject=[GitHub]%IQ-Learn))
 

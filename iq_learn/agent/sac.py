@@ -152,7 +152,7 @@ class SAC(object):
             self.log_alpha_optimizer.zero_grad()
             alpha_loss = (self.alpha *
                           (-log_prob - self.target_entropy).detach()).mean()
-            logger.log('train/alpha)loss', alpha_loss, step)
+            logger.log('train/alpha_loss', alpha_loss, step)
             logger.log('train/alpha_value', self.alpha, step)
 
             alpha_loss.backward()
