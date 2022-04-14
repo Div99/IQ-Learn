@@ -13,10 +13,12 @@ env:
 num_seed_steps: 1000
 log_interval: 20
 
-eval:
-  policy: 
+expert:
   demos: 20
   subsample_freq: 1
+
+eval:
+  policy: 
   threshold: 21
   use_baselines: False
   eps: 10

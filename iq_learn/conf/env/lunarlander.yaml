@@ -6,10 +6,12 @@ env:
   learn_steps: 1e6
   eval_interval: 1e3
 
-eval:
-  policy: 
+expert:
   demos: 1
   subsample_freq: 5
+
+eval:
+  policy: 
   threshold: 500
 
 q_net:

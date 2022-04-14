@@ -9,10 +9,12 @@ env:
   eps_window: 10
   learn_steps: 10e5
 
-eval:
-  policy: 
+expert:
   demos: 20
   subsample_freq: 1
+
+eval:
+  policy: 
   threshold: 21
   use_baselines: True
   eps: 10

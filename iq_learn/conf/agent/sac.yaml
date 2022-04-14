@@ -22,7 +22,8 @@ agent:
   critic_tau: 0.005
   critic_target_update_frequency: 1
 
-  learnable_temperature: true
+  # learn temperature coefficient (disabled by default)
+  learn_temp: false
 
   # Use either value_dice actor or normal SAC actor loss
   vdice_actor: false

@@ -14,10 +14,12 @@ env:
   learn_steps: 5e5
   eval_interval: 5e3
 
-eval:
-  policy: 
+expert:
   demos: 1
   subsample_freq: 1
+
+eval:
+  policy: 
   threshold: 5000
 
 agent:

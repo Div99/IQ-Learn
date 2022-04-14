@@ -18,7 +18,7 @@ class SAC(object):
         agent_cfg = args.agent
 
         self.critic_tau = agent_cfg.critic_tau
-        self.learnable_temperature = agent_cfg.learnable_temperature
+        self.learn_temp = agent_cfg.learn_temp
         self.actor_update_frequency = agent_cfg.actor_update_frequency
         self.critic_target_update_frequency = agent_cfg.critic_target_update_frequency
 
@@ -148,7 +148,7 @@ class SAC(object):
             'actor_loss/entropy': -log_prob.mean().item()}
 
         # self.actor.log(logger, step)
-        if self.learnable_temperature:
+        if self.learn_temp:
             self.log_alpha_optimizer.zero_grad()
             alpha_loss = (self.alpha *
                           (-log_prob - self.target_entropy).detach()).mean()
