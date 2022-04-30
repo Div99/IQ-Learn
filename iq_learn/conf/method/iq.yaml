@@ -9,6 +9,9 @@ method:
   chi: False
   tanh: False
   regularize: False
+  smooth_expert: False
+  test: False
+  rl: False
   div:
 
   alpha: 0.5

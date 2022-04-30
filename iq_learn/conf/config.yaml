@@ -36,6 +36,9 @@ env:
   learn_steps: 5e5
   eval_interval: 5e3
 
+  # use pixels
+  from_pixels: False
+
 method:
   type: iq
 

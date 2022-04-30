@@ -13,11 +13,15 @@ class SoftQNetwork(nn.Module):
         self.device = device
         self.tanh = nn.Tanh()
 
-    def _forward(self, x):
+    def _forward(self, x, *args):
         return NotImplementedError
 
-    def forward(self, x):
-        out = self._forward(x)
+    def forward(self, x, both=False):
+        if "DoubleQ" in self.args.q_net._target_:
+            out = self._forward(x, both)
+        else:
+            out = self._forward(x)
+
         if self.args.method.tanh:
             return self.tanh(out) * 1/(1-self.args.gamma)
         return out
@@ -82,7 +86,7 @@ class SimpleQNetwork(SoftQNetwork):
         self.fc2 = nn.Linear(128, 128)
         self.fc3 = nn.Linear(128, action_dim)
 
-    def _forward(self, x):
+    def _forward(self, x, *args):
         x = self.relu(self.fc1(x))
         x = self.relu(self.fc2(x))
         x = self.fc3(x)
@@ -98,7 +102,7 @@ class OfflineQNetwork(SoftQNetwork):
         self.fc2 = nn.Linear(64, 64)
         self.fc3 = nn.Linear(64, action_dim)
 
-    def _forward(self, x):
+    def _forward(self, x, *args):
         x = self.elu(self.fc1(x))
         x = self.elu(self.fc2(x))
         x = self.fc3(x)
@@ -109,14 +113,33 @@ class DoubleQNetwork(SoftQNetwork):
     def __init__(self, obs_dim, action_dim, args, device='cpu'):
         super(DoubleQNetwork, self).__init__(obs_dim, action_dim, args, device)
         self.args = args
-        self.net1 = SimpleQNetwork(obs_dim, action_dim, args, device)
-        self.net2 = SimpleQNetwork(obs_dim, action_dim, args, device)
+        self.net1 = AtariQNetwork(obs_dim, action_dim, args, device)
+        self.net2 = AtariQNetwork(obs_dim, action_dim, args, device)
 
-    def _forward(self, x):
-        x1 = self.net1.forward(x)
-        x2 = self.net2.forward(x)
-        return torch.min(x1, x2)
+    def _forward(self, x, both=False):
+        q1 = self.net1.forward(x)
+        q2 = self.net2.forward(x)
 
+        if both:
+            return q1, q2
+        else:
+            return torch.minimum(q1, q2)
+
+class DoubleQNetworkMax(SoftQNetwork):
+    def __init__(self, obs_dim, action_dim, args, device='cpu'):
+        super(DoubleQNetworkMax, self).__init__(obs_dim, action_dim, args, device)
+        self.args = args
+        self.net1 = AtariQNetwork(obs_dim, action_dim, args, device)
+        self.net2 = AtariQNetwork(obs_dim, action_dim, args, device)
+
+    def _forward(self, x, both=False):
+        q1 = self.net1.forward(x)
+        q2 = self.net2.forward(x)
+
+        if both:
+            return q1, q2
+        else:
+            return torch.maximum(q1, q2)
 
 class AtariQNetwork(SoftQNetwork):
     def __init__(self, obs_dim, action_dim, args, device='cpu', input_dim=(84, 84)):
@@ -145,7 +168,7 @@ class AtariQNetwork(SoftQNetwork):
         return self.cnn(torch.zeros(1, self.frames, *input_dim)
                         ).flatten().shape[0]
 
-    def _forward(self, x):
+    def _forward(self, x, *args):
         cnn_out = self.cnn(x).reshape(-1, self.fc_layer_inputs)
         return self.fully_connected(cnn_out)
 
@@ -159,7 +182,7 @@ class SimpleVNetwork(SoftQNetwork):
         self.fc2 = nn.Linear(128, 128)
         self.fc3 = nn.Linear(128, 1)
 
-    def _forward(self, x):
+    def _forward(self, x, *args):
         x = self.relu(self.fc1(x))
         x = self.relu(self.fc2(x))
         x = self.fc3(x)

@@ -68,15 +68,25 @@ class SoftQ(object):
             torch.logsumexp(q/self.alpha, dim=1, keepdim=True)
         return v
 
-    def critic(self, obs, action):
-        q = self.q_net(obs)
-        # if isinstance(q, tuple):
-        #     q1, q2 = q
-        #     critic1 = q1.gather(1, action.long())
-        #     critic2 = q2.gather(1, action.long())
-        #     return min(critic1, critic2)
+    def critic(self, obs, action, both=False):
+        q = self.q_net(obs, both)
+        if isinstance(q, tuple) and both:
+            q1, q2 = q
+            critic1 = q1.gather(1, action.long())
+            critic2 = q2.gather(1, action.long())
+            return critic1, critic2
 
         return q.gather(1, action.long())
+    
+    def sampleQ(self, obs):
+        q = self.q_net(obs)
+        # act_probs = F.softmax(q/self.alpha, dim=-1)
+        dist = F.softmax(q/self.alpha, dim=1)
+        dist = Categorical(dist)
+        action = dist.sample().unsqueeze(1)
+            
+        return q.gather(1, action.long())
+        # return torch.sum(q * act_probs, dim=1, keepdim=True)
 
     def get_targetV(self, obs):
         q = self.target_net(obs)

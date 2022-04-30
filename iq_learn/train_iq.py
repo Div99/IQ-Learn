@@ -26,7 +26,7 @@ from dataset.memory import Memory
 from agent import make_agent
 from utils.utils import eval_mode, average_dicts, get_concat_samples, evaluate, soft_update, hard_update
 from utils.logger import Logger
-from iq import iq_loss
+from iq import iq_loss, iq_loss2
 
 torch.set_num_threads(2)
 
@@ -250,6 +250,9 @@ def iq_update_critic(self, policy_batch, expert_batch, logger, step):
     args = self.args
     policy_obs, policy_next_obs, policy_action, policy_reward, policy_done = policy_batch
     expert_obs, expert_next_obs, expert_action, expert_reward, expert_done = expert_batch
+    
+    # if args.method.test:
+    #     iq_loss = iq_loss2
 
     if args.only_expert_states:
         # Use policy actions instead of experts actions for IL with only observations
@@ -260,13 +263,15 @@ def iq_update_critic(self, policy_batch, expert_batch, logger, step):
 
     agent = self
     current_V = self.getV(obs)
+
     if args.train.use_target:
         with torch.no_grad():
+            # print('--> Using target')
             next_V = self.get_targetV(next_obs)
     else:
         next_V = self.getV(next_obs)
 
-    if "DoubleQCritic" in self.args.q_net._target_:
+    if "DoubleQ" in self.args.q_net._target_:
         current_Q1, current_Q2 = self.critic(obs, action, both=True)
         q1_loss, loss_dict1 = iq_loss(agent, current_Q1, current_V, next_V, batch)
         q2_loss, loss_dict2 = iq_loss(agent, current_Q2, current_V, next_V, batch)

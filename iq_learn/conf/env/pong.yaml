@@ -2,7 +2,7 @@
 
 env:
   name: PongNoFrameskip-v4
-  demo: PongNoFrameskip-v4_30
+  demo: PongNoFrameskip-v4_40.pkl
   replay_mem: 100000
   initial_mem: 5000
   eps_steps: 1e6
