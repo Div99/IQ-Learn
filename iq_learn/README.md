@@ -21,7 +21,7 @@ IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-
 
 - Make a conda environment and install dependencies: `pip install -r requirements.txt`
 - Setup wandb project to log and visualize metrics
-- (Optional) Download expert datasets for Atari environments from [Dropbox](https://www.dropbox.com/sh/xi92cwnrh0wqxa4/AABK9KFI-PxZ6fMaXJ2U8xKMa?dl=0)
+- (Optional) Download expert datasets for Atari environments from [GDrive](https://drive.google.com/drive/folders/1dyHFAb_XVYN-43iHzi6ZePIlYJywiga7?usp=sharing)
 
 ## Examples
 
