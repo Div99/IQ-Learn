@@ -15,7 +15,7 @@ IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-
 - gym
 - wandb
 - tensorboardX
-- hydra-core
+- hydra-core=1.0 (>= 1.1 is incompatible currently)
 
 ## Installation
 
@@ -65,7 +65,7 @@ Contributions are very welcome. If you know how to make this code better, please
 
 ## License
 
-The code is made available for academic, non-commercial usage. Please see the [LICENSE](LICENSE.md) for the licensing terms of IQ-Learn for commercial use or running it on your robots/creating new AI agents.
+The code is made available for academic, non-commercial usage. Please see the [LICENSE](LICENSE.md) for the licensing terms of IQ-Learn for commercial use and running it on your robots/creating new AI agents.
 
 For any inquiry, contact: Div Garg ([divgarg@stanford.edu](mailto:divgarg@stanford.edu?subject=[GitHub]%IQ-Learn))
 
