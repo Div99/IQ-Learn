@@ -36,14 +36,15 @@ class SAC(object):
         self.target_entropy = -action_dim
 
         # optimizers
-        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(),
-                                                lr=agent_cfg.actor_lr,
-                                                betas=agent_cfg.actor_betas)
-        self.critic_optimizer = Adam(self.critic.parameters(), lr=agent_cfg.critic_lr,
+        self.actor_optimizer = Adam(self.actor.parameters(),
+                                    lr=agent_cfg.actor_lr,
+                                    betas=agent_cfg.actor_betas)
+        self.critic_optimizer = Adam(self.critic.parameters(),
+                                     lr=agent_cfg.critic_lr,
                                      betas=agent_cfg.critic_betas)
-        self.log_alpha_optimizer = torch.optim.Adam([self.log_alpha],
-                                                    lr=agent_cfg.alpha_lr,
-                                                    betas=agent_cfg.alpha_betas)
+        self.log_alpha_optimizer = Adam([self.log_alpha],
+                                        lr=agent_cfg.alpha_lr,
+                                        betas=agent_cfg.alpha_betas)
         self.train()
         self.critic_target.train()
 
