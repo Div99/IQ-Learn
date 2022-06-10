@@ -7,7 +7,7 @@ env:
   initial_mem: 5000
   eps_steps: 1e6
   eps_window: 10
-  learn_steps: 10e5
+  learn_steps: 1e6
   eval_interval: 5e3
 
 num_seed_steps: 1000

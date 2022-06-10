@@ -127,3 +127,7 @@ dmypy.json
 .pyre/
 
 .DS_Store
+
+# Ignored folders
+iq_learn/outputs
+iq_learn/wandb

@@ -1,0 +1,29 @@
+# @package _global_
+
+env:
+  name: QbertNoFrameskip-v4
+  demo: QbertNoFrameskip-v4_30.pkl
+  replay_mem: 150000
+  initial_mem: 5000
+  eps_steps: 1e6
+  eps_window: 10
+  learn_steps: 1e6
+
+expert:
+  demos: 20
+  subsample_freq: 1
+
+eval:
+  policy: 
+  threshold:
+  use_baselines: True
+  eps: 10
+
+agent:
+  critic_target_update_frequency: 1000
+
+train:
+  batch: 64
+
+q_net:
+  _target_: agent.softq_models.AtariQNetwork

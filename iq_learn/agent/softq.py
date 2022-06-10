@@ -77,16 +77,6 @@ class SoftQ(object):
             return critic1, critic2
 
         return q.gather(1, action.long())
-    
-    def sampleQ(self, obs):
-        q = self.q_net(obs)
-        # act_probs = F.softmax(q/self.alpha, dim=-1)
-        dist = F.softmax(q/self.alpha, dim=1)
-        dist = Categorical(dist)
-        action = dist.sample().unsqueeze(1)
-            
-        return q.gather(1, action.long())
-        # return torch.sum(q * act_probs, dim=1, keepdim=True)
 
     def get_targetV(self, obs):
         q = self.target_net(obs)

@@ -8,6 +8,11 @@ Our IQ-Learn algorithm is present in `iq.py`. This file can be used standalone t
 IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-policy) by changing the critic update loss to our proposed `iq_loss`. <br>
 (IQ has been successfully tested to work with Q-Learning, SAC, PPO, DDPG and Decision Transformer agents).
 
+### Update:
+ 
+ - Added IQ-Learn results on Humanoid-v2
+ - Added support for DM Control environments
+ - Released `expert_generation` script to generate your own experts from trained RL agents for new environments.
 
 ## Requirement
 
@@ -21,7 +26,7 @@ IQ-Learn can be implemented on top of most existing RL methods (off-policy & on-
 
 - Make a conda environment and install dependencies: `pip install -r requirements.txt`
 - Setup wandb project to log and visualize metrics
-- (Optional) Download expert datasets for Atari environments from [GDrive](https://drive.google.com/drive/folders/1dyHFAb_XVYN-43iHzi6ZePIlYJywiga7?usp=sharing)
+- (Optional) Download expert datasets for Atari environments from [GDrive](https://drive.google.com/file/d/1wKdMi10_X0oV4URdkv8JSCY0rRB8iBFq/view?usp=sharing)
 
 ## Examples
 
@@ -43,10 +48,22 @@ IQ-Learn is the only method thats reaches the expert env reward of **500** (requ
 python train_iq.py agent=softq env=pong agent.init_temp=1e-3 method.loss=value_expert method.chi=True seed=0 expert.demos=30
 ```
 
-IQ-Learn is the only method thats reaches the expert env reward of **21** (we find better hyperparams compared to the original paper)
+Again, IQ-Learn is the only method thats reaches the expert env reward of **21** <br>
+(we find better hyperparams compared to the original paper)
 
 <img src="../docs/pong_example.png" width="500"> 
 
+
+
+### 3. Controlling a Humanoid with imitation of a single expert
+
+```
+python train_iq.py env=humanoid agent=sac expert.demos=1 method.loss=v0 method.regularize=True agent.actor_lr=3e-05 seed=0 agent.init_temp=1
+```
+
+IQ-Learn learns to control a full humanoid at expert performance using a single demonstration reaching the expert env reward of **5300** <br>
+
+<img src="../docs/humanoid_example.png" width="500"> 
 
 ## Instructions
 We show example code for training Q-Learning and SAC agents with **IQ-Learn** in `train_iq`.py. We make minimum modifications to original RL training code present in `train_rl`.py and simply change the critic loss function.

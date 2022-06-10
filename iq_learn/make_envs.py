@@ -65,7 +65,12 @@ def make_atari(env):
     return env
 
 def is_atari(env_name):
-    return env_name in ['PongNoFrameskip-v4', 'BreakoutNoFrameskip-v4', 'SpaceInvadersNoFrameskip-v4', 'BeamRiderNoFrameskip-v4']
+    return env_name in ['PongNoFrameskip-v4', 
+                        'BreakoutNoFrameskip-v4', 
+                        'SpaceInvadersNoFrameskip-v4', 
+                        'BeamRiderNoFrameskip-v4',
+                        'QbertNoFrameskip-v4',
+                        'SeaquestNoFrameskip-v4']
 
 
 def make_env(args, monitor=True):

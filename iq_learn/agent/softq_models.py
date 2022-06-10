@@ -125,22 +125,6 @@ class DoubleQNetwork(SoftQNetwork):
         else:
             return torch.minimum(q1, q2)
 
-class DoubleQNetworkMax(SoftQNetwork):
-    def __init__(self, obs_dim, action_dim, args, device='cpu'):
-        super(DoubleQNetworkMax, self).__init__(obs_dim, action_dim, args, device)
-        self.args = args
-        self.net1 = AtariQNetwork(obs_dim, action_dim, args, device)
-        self.net2 = AtariQNetwork(obs_dim, action_dim, args, device)
-
-    def _forward(self, x, both=False):
-        q1 = self.net1.forward(x)
-        q2 = self.net2.forward(x)
-
-        if both:
-            return q1, q2
-        else:
-            return torch.maximum(q1, q2)
-
 class AtariQNetwork(SoftQNetwork):
     def __init__(self, obs_dim, action_dim, args, device='cpu', input_dim=(84, 84)):
         super(AtariQNetwork, self).__init__(obs_dim, action_dim, args, device)

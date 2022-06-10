@@ -111,11 +111,11 @@ def get_concat_samples(policy_batch, expert_batch, args):
 
     expert_batch_state, expert_batch_next_state, expert_batch_action, expert_batch_reward, expert_batch_done = expert_batch
 
-#     if args.method.type == "sqil":
-#         # convert policy reward to 0
-#         online_batch_reward = torch.zeros_like(online_batch_reward)
-#         # convert expert reward to 1
-#         expert_batch_reward = torch.ones_like(expert_batch_reward)
+    if args.method.type == "sqil":
+        # convert policy reward to 0
+        online_batch_reward = torch.zeros_like(online_batch_reward)
+        # convert expert reward to 1
+        expert_batch_reward = torch.ones_like(expert_batch_reward)
 
     batch_state = torch.cat([online_batch_state, expert_batch_state], dim=0)
     batch_next_state = torch.cat(

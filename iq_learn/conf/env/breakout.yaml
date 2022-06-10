@@ -7,7 +7,7 @@ env:
   initial_mem: 5000
   eps_steps: 1e6
   eps_window: 10
-  learn_steps: 10e5
+  learn_steps: 1e6
 
 expert:
   demos: 20
@@ -15,7 +15,7 @@ expert:
 
 eval:
   policy: 
-  threshold: 21
+  threshold:
   use_baselines: True
   eps: 10
 

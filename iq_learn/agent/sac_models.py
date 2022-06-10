@@ -9,12 +9,6 @@ from torch.autograd import Variable, grad
 import utils.utils as utils
 
 # Initialize Policy weights
-def weights_init_(m):
-    if isinstance(m, nn.Linear):
-        torch.nn.init.xavier_uniform_(m.weight, gain=1)
-        torch.nn.init.constant_(m.bias, 0)
-
-
 def orthogonal_init_(m):
     """Custom weight init for Conv2D and Linear layers."""
     if isinstance(m, nn.Linear):

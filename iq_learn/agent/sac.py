@@ -33,7 +33,7 @@ class SAC(object):
         self.log_alpha = torch.tensor(np.log(agent_cfg.init_temp)).to(self.device)
         self.log_alpha.requires_grad = True
         # Target Entropy = −dim(A) (e.g. , -6 for HalfCheetah-v2) as given in the paper
-        self.target_entropy = 4 * -action_dim
+        self.target_entropy = -action_dim
 
         # optimizers
         self.actor_optimizer = Adam(self.actor.parameters(),
@@ -69,15 +69,9 @@ class SAC(object):
         state = torch.FloatTensor(state).to(self.device).unsqueeze(0)
         dist = self.actor(state)
         action = dist.sample() if sample else dist.mean
-        action = action.clamp(*self.action_range)
         # assert action.ndim == 2 and action.shape[0] == 1
         return action.detach().cpu().numpy()[0]
 
-    def sampleQ(self, obs):
-        action, log_prob, _ = self.actor.sample(obs)
-        current_Q = self.critic(obs, action)
-        return current_Q
-    
     def getV(self, obs):
         action, log_prob, _ = self.actor.sample(obs)
         current_Q = self.critic(obs, action)
