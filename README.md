@@ -1,6 +1,6 @@
 # Inverse Q-Learning (IQ-Learn)
 
-### [**[Project Page](https://div99.github.io/IQ-Learn)**] Official code base for **[IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142)**, ***NeurIPS '21 Spotlight*** 
+### [**[Project Page](https://div99.github.io/IQ-Learn)**] [**[Blog Post](https://ai.stanford.edu/blog/learning-to-imitate/)**] Official code base for **[IQ-Learn: Inverse soft-Q Learning for Imitation](https://arxiv.org/abs/2106.12142)**, ***NeurIPS '21 Spotlight*** 
 
 **IQ-Learn** is an simple, stable & data-efficient algorithm that's a drop-in replacement to methods like Behavior Cloning and GAIL, to boost your imitation learning pipelines! 
 
